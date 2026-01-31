@@ -5,6 +5,7 @@ SHELL := /bin/bash
 
 APP_ENV_FILES :=
 DOCKER_ENV_FILES :=
+ARGS?=
 
 ifneq ($(wildcard .env),)
   APP_ENV_FILES += .env
@@ -71,8 +72,8 @@ clean: ## Remove .pyc files and pre-commit cache
 # ========================
 # Run App
 # ========================
-run: ## Run app using uvicorn for local dev
-	@$(load_env); $(UV_RUN) uvicorn examples.app:app --reload --port=8101
+run: ## Run app
+	$(load_env); $(UV_RUN) cli.py $(ARGS)
 
 # ========================
 # Formatting & Linting
