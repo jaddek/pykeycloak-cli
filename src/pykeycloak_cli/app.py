@@ -10,6 +10,7 @@ from pykeycloak.dependancies import get_keycloak_client_wrapper_from_env
 from pykeycloak.factories import KeycloakServiceFactory
 from pykeycloak.providers.providers import KeycloakInMemoryProviderAsync
 
+from .domain.clients.commands import app as clients_app
 from .domain.users.commands import app as users_app
 from .registry import KeycloakServiceRegistry
 
@@ -43,3 +44,4 @@ def main(ctx: typer.Context) -> None:
 get_keycloak_client_wrapper_from_env()
 
 app.add_typer(users_app, name="users")
+app.add_typer(clients_app, name="clients")

@@ -6,7 +6,6 @@ from typing import Annotated
 
 from pykeycloak.core.realm import Realm
 from pykeycloak.factories import KeycloakServiceFactory
-from rich.console import Console
 from typer import Context, Option, Typer
 
 from .services import (
@@ -24,7 +23,6 @@ from .services import (
 )
 
 app: Typer = Typer(help="Keycloak user commands")
-console = Console()
 
 
 @app.command()
