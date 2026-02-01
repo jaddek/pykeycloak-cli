@@ -188,6 +188,8 @@ async def _delete_async(service_factory: KeycloakServiceFactory, user_id: str) -
     await service_factory.auth.client_login_async()
     await service_factory.users.delete_user_async(user_id=user_id)
 
+    console.print("ok")
+
 
 async def _update_password_async(
     service_factory: KeycloakServiceFactory, user_id: str, pwd: str
@@ -204,3 +206,5 @@ async def _update_password_async(
             ]
         ),
     )
+
+    console.print("ok")

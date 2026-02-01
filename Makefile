@@ -73,7 +73,7 @@ clean: ## Remove .pyc files and pre-commit cache
 # Run App
 # ========================
 run: ## Run app
-	$(load_env); $(UV_RUN) cli.py $(ARGS)
+	@$(load_env); $(UV_RUN) cli.py $(ARGS)
 
 # ========================
 # Formatting & Linting
