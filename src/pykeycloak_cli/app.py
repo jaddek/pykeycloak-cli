@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
+from types import SimpleNamespace
+
+import typer
+from pykeycloak.core.headers import HeadersFactory
+from pykeycloak.core.realm import Realm, RealmClient
+from pykeycloak.core.validator import KeycloakResponseValidator
+from pykeycloak.dependancies import get_keycloak_client_wrapper_from_env
+from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.providers.providers import KeycloakInMemoryProviderAsync
+
+from .domain.users.commands import app as users_app
+from .registry import KeycloakServiceRegistry
+
+app = typer.Typer()
+
+
+@app.callback()
+def main(ctx: typer.Context) -> None:
+    registry = KeycloakServiceRegistry()
+
+    realm = Realm(name="otago")
+
+    service_factory = KeycloakServiceFactory(
+        provider=KeycloakInMemoryProviderAsync(
+            realm=realm,
+            realm_client=RealmClient.from_env(),
+            headers=HeadersFactory(),
+            wrapper=get_keycloak_client_wrapper_from_env(),
+        ),
+        validator=KeycloakResponseValidator(),
+    )
+
+    registry.register(realm=realm, factory=service_factory)
+
+    ctx.obj = SimpleNamespace(
+        registry=registry,
+        realm_otago=realm,
+    )
+
+
+get_keycloak_client_wrapper_from_env()
+
+app.add_typer(users_app, name="users")
