@@ -139,6 +139,15 @@ async def _delete_all_sessions_async(
     console.print("ok")
 
 
+async def _delete_users_sessions_async(
+    service_factory: KeycloakServiceFactory,
+    user_id: str,
+) -> None:
+    await service_factory.auth.client_login_async()
+
+    await service_factory.sessions.remove_user_sessions_raw_async(user_id=user_id)
+
+
 async def _client_async(
     service_factory: KeycloakServiceFactory,
     fields: str | None,

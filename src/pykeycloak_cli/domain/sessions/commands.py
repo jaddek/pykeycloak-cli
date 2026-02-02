@@ -13,6 +13,7 @@ from .services import (
     _count_async,
     _delete_all_sessions_async,
     _delete_session_by_id_async,
+    _delete_users_sessions_async,
     _offline_sessions_async,
     _stats_async,
     _user_sessions_async,
@@ -147,5 +148,21 @@ def delete_all(
     asyncio.run(
         _delete_all_sessions_async(
             service_factory=service_factory,
+        )
+    )
+
+
+@app.command()
+def delete_users_sessions(
+    ctx: Context,
+    realm: Annotated[str, Option(...)],
+    user_id: Annotated[str, Option(...)],
+) -> None:
+    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+
+    asyncio.run(
+        _delete_users_sessions_async(
+            service_factory=service_factory,
+            user_id=user_id,
         )
     )
