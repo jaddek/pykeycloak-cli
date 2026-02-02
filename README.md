@@ -1,10 +1,64 @@
 # PyKeycloak CLI
 
-The small library cli based on [pykeycloak](https://github.com/jaddek/pykeycloak) and Typer
+This is a lightweight CLI library built on [Pykeycloak](https://github.com/jaddek/pykeycloak) and [Typer](https://github.com/fastapi/typer).
+
+
+- [Env](#env)
+- [Commands](#commands)
+  - [Users](#users)
+  - [Clients](#clients)
+  - [Sessions](#sessions)
+  - [Roles](#roles)
+  - [Auth](#auth)
+  - [Uma](#uma)
+  - [Authz](#authz)
+    - [Scopes](#scopes)
+    - [Policies](#policies)
+    - [Resources](#resources)
+    - [Permissions](#permissions)
 
 ## Env
 
+To run the command iti is possible to use just `uv run` OR `make run`
+
+- `uv run cli.py`: Run the command directly.
+- `make run`: Run the same with environment variables loaded from .env and .env.local. `(Dev mode)`
+
+
 Located in .env|.env.local (according makefile)
+
+```sh
+KEYCLOAK_ACCESS_TOKEN=
+KEYCLOAK_REALM_NAME=
+KEYCLOAK_REALM_CLIENT_UUID=
+KEYCLOAK_REALM_CLIENT_ID=
+KEYCLOAK_REALM_CLIENT_SECRET=
+KEYCLOAK_BASE_URL=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_HTTP1=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_HTTP2=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_FOLLOW_REDIRECTS=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_TRUST_ENV=
+KEYCLOAK_HTTPX_CLIENT_CLIENT_PARAMS_TIMEOUT=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_MAX_CONNECTIONS=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_MAX_KEEPALIVE_CONNECTIONS=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_KEEPALIVE_EXPIRY=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_MAX_REDIRECTS=
+KEYCLOAK_HTTPX_CLIENT_PARAMS_DEFAULT_ENCODING=utf-8
+KEYCLOAK_MAX_ROWS_QUERY_LIMIT=1000 # = max=1000(=limit=1000)
+
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_VERIFY=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_CERT=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_TRUST_ENV=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_HTTP1=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_HTTP2=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_RETRIES=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_PROXY=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_UDS=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_LOCAL_ADDRESSES=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_MAX_CONNECTIONS=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_KEEPALIVE_EXPIRY=
+KEYCLOAK_HTTPX_HTTP_TRANSPORT_HTTP_MAX_KEEPALIVE_CONNECTIONS=
+```
 
 ## Commands:
 

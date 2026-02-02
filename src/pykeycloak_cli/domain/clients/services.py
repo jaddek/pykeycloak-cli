@@ -3,7 +3,7 @@
 from pykeycloak.factories import KeycloakServiceFactory
 from rich.console import Console
 
-from pykeycloak_cli.representation.clients.console import view_clients_list
+from .console import view_clients_list
 
 console = Console()
 

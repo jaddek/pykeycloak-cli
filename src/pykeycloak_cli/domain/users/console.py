@@ -22,11 +22,14 @@ def view_user_list(
         )
     )
 
-    table = Table(title=f"Users (Total: {users_count})", style="dim")
+    table = Table(title=f"Users (Total: {users_count})", style="dim", expand=True)
     table.add_column("#", justify="center", style="dim")
 
     for header in active_headers:
-        table.add_column(header, justify="left")
+        table.add_column(
+            header,
+            justify="left",
+        )
 
     for i, _user in users_list:
         row_values = [str(getattr(_user, key, "—")) for key in active_headers]

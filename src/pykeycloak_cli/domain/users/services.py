@@ -10,9 +10,8 @@ from pykeycloak.providers.payloads import (
 from pykeycloak.providers.queries import GetUsersQuery
 from rich.console import Console
 
-from pykeycloak_cli.representation.users.console import view_user_list
-
 from ...registry import KeycloakServiceFactory
+from .console import view_user_list
 
 console = Console()
 
