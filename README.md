@@ -1,21 +1,22 @@
 # PyKeycloak CLI
 
-This is a lightweight CLI library built on [Pykeycloak](https://github.com/jaddek/pykeycloak) and [Typer](https://github.com/fastapi/typer).
-
+This is a lightweight CLI library built
+on [Pykeycloak](https://github.com/jaddek/pykeycloak), [Pykeycloak-realm](https://github.com/jaddek/pykeycloak-realm)
+and [Typer](https://github.com/fastapi/typer).
 
 - [Env](#env)
 - [Commands](#commands)
-  - [Users](#users)
-  - [Clients](#clients)
-  - [Sessions](#sessions)
-  - [Roles](#roles)
-  - [Auth](#auth)
-  - [Uma](#uma)
-  - [Authz](#authz)
-    - [Scopes](#scopes)
-    - [Policies](#policies)
-    - [Resources](#resources)
-    - [Permissions](#permissions)
+    - [Users](#users)
+    - [Clients](#clients)
+    - [Sessions](#sessions)
+    - [Roles](#roles)
+    - [Auth](#auth)
+    - [Uma](#uma)
+    - [Authz](#authz)
+        - [Scopes](#scopes)
+        - [Policies](#policies)
+        - [Resources](#resources)
+        - [Permissions](#permissions)
 
 ## Env
 
@@ -23,7 +24,6 @@ To run the command iti is possible to use just `uv run` OR `make run`
 
 - `uv run cli.py`: Run the command directly.
 - `make run`: Run the same with environment variables loaded from .env and .env.local. `(Dev mode)`
-
 
 Located in .env|.env.local (according makefile)
 
@@ -118,4 +118,41 @@ make run ARGS="clients count --realm otago"
 ```sh
 
 make run ARGS="clients current --realm otago --fields 'name displayName'
+```
+
+### Sessions
+
+```sh
+
+make run ARGS="sessions stats  --realm otago"
+```
+
+```sh
+
+make run ARGS="sessions delete-all --realm otago"
+```
+
+```sh
+
+make run ARGS="sessions delete-by-id --session-id e9c0a406-e9c0-72b7-8924-aedcd8e306e0  --realm otago"
+```
+
+```sh
+
+make run ARGS="sessions stats  --realm otago --exclude-fields 'user_id useranme ip_address start remember_me'
+```
+
+```sh
+
+make run ARGS="sessions user --realm otago --user-id b8b1a406-b8b1-78e6-a0e7-618f997aa57c
+```
+
+```sh
+
+make run ARGS="sessions offline  --realm otago --user-id b8b1a406-b8b1-78e6-a0e7-618f997aa57c"
+```
+### UMA
+
+```sh
+ make run ARGS="uma perms --realm otago --access-token 'access-token' --response-mode permissions --permission-resource-format uri --permissions /otago/roles=view"
 ```
