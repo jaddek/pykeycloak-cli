@@ -8,10 +8,12 @@ from pykeycloak.providers.payloads import (
     UserUpdatePasswordPayload,
 )
 from pykeycloak.providers.queries import GetUsersQuery
+from pykeycloak.services.representations import UserRepresentation
 from rich.console import Console
 
+from pykeycloak_cli.representations.console_utils import view_resource_list
+
 from ...registry import KeycloakServiceFactory
-from .console import view_user_list
 
 console = Console()
 
@@ -30,9 +32,10 @@ async def _subset_async(
         GetUsersQuery(max=limit, first=offset)
     )
 
-    table = view_user_list(
-        users_list=enumerate(users_list, start=1),
-        users_count=users_count,
+    table = view_resource_list(
+        resource_type=UserRepresentation,
+        resource_list=enumerate(users_list, start=1),
+        resource_count=users_count,
         fields=fields,
         exclude=exclude,
         frame=frame,
@@ -51,9 +54,10 @@ async def _all_async(
 
     users_list, users_count = await service_factory.users.get_all_users_async()
 
-    table = view_user_list(
-        users_list=enumerate(users_list, start=1),
-        users_count=users_count,
+    table = view_resource_list(
+        resource_type=UserRepresentation,
+        resource_list=enumerate(users_list, start=1),
+        resource_count=users_count,
         fields=fields,
         exclude=exclude,
         frame=frame,
@@ -81,9 +85,10 @@ async def _by_id_async(
     await service_factory.auth.client_login_async()
     user = await service_factory.users.get_user_async(user_id=user_id)
 
-    table = view_user_list(
-        users_list=enumerate([user], start=1),
-        users_count=1 if user else 0,
+    table = view_resource_list(
+        resource_type=UserRepresentation,
+        resource_list=enumerate([user], start=1),
+        resource_count=1 if user else 0,
         fields=fields,
         exclude=exclude,
     )
@@ -111,9 +116,10 @@ async def _create_async(service_factory: KeycloakServiceFactory, username: str) 
 
     user = await service_factory.users.get_user_async(user_id=user_id)
 
-    table = view_user_list(
-        users_list=enumerate([user], start=1),
-        users_count=1 if user is not None else 0,
+    table = view_resource_list(
+        resource_type=UserRepresentation,
+        resource_list=enumerate([user], start=1),
+        resource_count=1 if user is not None else 0,
         fields=None,
         exclude=None,
     )
@@ -136,9 +142,10 @@ async def _update_async(
 
     user = await service_factory.users.get_user_async(user_id=user_id)
 
-    table = view_user_list(
-        users_list=enumerate([user], start=1),
-        users_count=1 if user is not None else 0,
+    table = view_resource_list(
+        resource_type=UserRepresentation,
+        resource_list=enumerate([user], start=1),
+        resource_count=1 if user is not None else 0,
         fields=None,
         exclude=None,
     )
@@ -154,9 +161,10 @@ async def _enable_async(service_factory: KeycloakServiceFactory, user_id: str) -
 
     user = await service_factory.users.get_user_async(user_id=user_id)
 
-    table = view_user_list(
-        users_list=enumerate([user], start=1),
-        users_count=1 if user is not None else 0,
+    table = view_resource_list(
+        resource_type=UserRepresentation,
+        resource_list=enumerate([user], start=1),
+        resource_count=1 if user is not None else 0,
         fields="enabled",
         exclude=None,
     )
@@ -173,9 +181,10 @@ async def _disable_async(service_factory: KeycloakServiceFactory, user_id: str) 
 
     user = await service_factory.users.get_user_async(user_id=user_id)
 
-    table = view_user_list(
-        users_list=enumerate([user], start=1),
-        users_count=1 if user is not None else 0,
+    table = view_resource_list(
+        resource_type=UserRepresentation,
+        resource_list=enumerate([user], start=1),
+        resource_count=1 if user is not None else 0,
         fields="enabled",
         exclude=None,
     )

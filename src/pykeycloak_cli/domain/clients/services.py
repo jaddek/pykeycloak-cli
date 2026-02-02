@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
 from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.services.representations import ClientRepresentation
 from rich.console import Console
 
-from .console import view_clients_list
+from pykeycloak_cli.representations.console_utils import view_resource_list
 
 console = Console()
 
@@ -17,9 +18,10 @@ async def _all(
 
     clients = await service_factory.clients.get_clients_async()
 
-    table = view_clients_list(
-        clients_list=enumerate(clients, start=1),
-        clients_count=len(clients),
+    table = view_resource_list(
+        resource_type=ClientRepresentation,
+        resource_list=enumerate(clients, start=1),
+        resource_count=len(clients),
         fields=fields,
         exclude=exclude,
     )
@@ -36,9 +38,10 @@ async def _client(
 
     client = await service_factory.clients.get_client_async()
 
-    table = view_clients_list(
-        clients_list=enumerate([client], start=1),
-        clients_count=1 if client else 0,
+    table = view_resource_list(
+        resource_type=ClientRepresentation,
+        resource_list=enumerate([client], start=1),
+        resource_count=1 if client else 0,
         fields=fields,
         exclude=exclude,
     )

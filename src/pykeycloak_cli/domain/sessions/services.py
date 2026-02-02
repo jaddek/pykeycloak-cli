@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
 from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.services.representations import SessionRepresentation
 from rich.console import Console
 
-from .console import view_session_list
+from pykeycloak_cli.representations.console_utils import view_resource_list
 
 console = Console()
 
@@ -18,9 +19,10 @@ async def _all_async(
 
     sessions_list = await service_factory.sessions.get_client_sessions_async()
 
-    table = view_session_list(
-        sessions_list=enumerate(sessions_list, start=1),
-        sessions_count=len(sessions_list),
+    table = view_resource_list(
+        resource_type=SessionRepresentation,
+        resource_list=enumerate(sessions_list, start=1),
+        resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,
         frame=frame,
@@ -36,7 +38,7 @@ async def _count_async(
 
     count = await service_factory.sessions.get_client_sessions_count_async()
 
-    console.print(count.count)
+    console.print(count)
 
 
 async def _stats_async(
@@ -49,9 +51,10 @@ async def _stats_async(
 
     sessions_list = await service_factory.sessions.get_client_session_stats_async()
 
-    table = view_session_list(
-        sessions_list=enumerate(sessions_list, start=1),
-        sessions_count=len(sessions_list),
+    table = view_resource_list(
+        resource_type=SessionRepresentation,
+        resource_list=enumerate(sessions_list, start=1),
+        resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,
         frame=frame,
@@ -75,9 +78,10 @@ async def _offline_sessions_async(
         )
     )
 
-    table = view_session_list(
-        sessions_list=enumerate(sessions_list, start=1),
-        sessions_count=len(sessions_list),
+    table = view_resource_list(
+        resource_type=SessionRepresentation,
+        resource_list=enumerate([sessions_list], start=1),
+        resource_count=len([sessions_list]),
         fields=fields,
         exclude=exclude,
         frame=frame,
@@ -99,9 +103,10 @@ async def _user_sessions_async(
         user_id=user_id
     )
 
-    table = view_session_list(
-        sessions_list=enumerate(sessions_list, start=1),
-        sessions_count=len(sessions_list),
+    table = view_resource_list(
+        resource_type=SessionRepresentation,
+        resource_list=enumerate(sessions_list, start=1),
+        resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,
         frame=frame,
@@ -146,9 +151,10 @@ async def _client_async(
     # This might need adjustment based on the actual Keycloak API
     sessions_list = await service_factory.sessions.get_client_sessions_async()
 
-    table = view_session_list(
-        sessions_list=enumerate(sessions_list, start=1),
-        sessions_count=len(sessions_list),
+    table = view_resource_list(
+        resource_type=SessionRepresentation,
+        resource_list=enumerate(sessions_list, start=1),
+        resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,
         frame=frame,
