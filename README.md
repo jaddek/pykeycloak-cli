@@ -151,6 +151,13 @@ make run ARGS="sessions user --realm otago --user-id b8b1a406-b8b1-78e6-a0e7-618
 
 make run ARGS="sessions offline  --realm otago --user-id b8b1a406-b8b1-78e6-a0e7-618f997aa57c"
 ```
+
+```sh
+
+make run ARGS="sessions delete_users_sessions  --realm otago --user-id b8b1a406-b8b1-78e6-a0e7-618f997aa57c"
+```
+
+
 ### UMA
 
 ```sh
