@@ -13,3 +13,4 @@ wheels/
 
 main.py
 .coverage
+requirements.txt

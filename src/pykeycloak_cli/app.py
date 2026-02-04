@@ -10,6 +10,7 @@ from pykeycloak.dependancies import get_keycloak_client_wrapper_from_env
 from pykeycloak.factories import KeycloakServiceFactory
 from pykeycloak.providers.providers import KeycloakInMemoryProviderAsync
 
+from .domain.auth.commands import app as auth_app
 from .domain.clients.commands import app as clients_app
 from .domain.sessions.commands import app as sessions_app
 from .domain.uma.commands import app as uma_app
@@ -47,3 +48,4 @@ app.add_typer(users_app, name="users")
 app.add_typer(clients_app, name="clients")
 app.add_typer(sessions_app, name="sessions")
 app.add_typer(uma_app, name="uma")
+app.add_typer(auth_app, name="auth")

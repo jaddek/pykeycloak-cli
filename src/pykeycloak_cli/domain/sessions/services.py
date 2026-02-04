@@ -156,8 +156,6 @@ async def _client_async(
 ) -> None:
     await service_factory.auth.client_login_async()
 
-    # Assuming there's a method to get client sessions for the current client
-    # This might need adjustment based on the actual Keycloak API
     sessions_list = await service_factory.sessions.get_client_sessions_async()
 
     table = view_resource_list(

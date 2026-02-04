@@ -44,13 +44,13 @@ def perms(
         list[str], Option(..., "--permission", help="Repeatable: role=perm1,perm2")
     ],
     response_mode: Annotated[
-        str, Option(default=str(UrnIetfOauthUmaTicketResponseModeEnum.DECISION))
-    ],
+        UrnIetfOauthUmaTicketResponseModeEnum, Option()
+    ] = UrnIetfOauthUmaTicketResponseModeEnum.DECISION,
     permission_resource_format: Annotated[
-        str, Option(UrnIetfOauthUmaTicketPermissionResourceFormatEnum.URI)
-    ],
-    permission_resource_matching_uri: Annotated[bool, Option(False)],
-    response_include_resource_name: Annotated[bool, Option(False)],
+        UrnIetfOauthUmaTicketPermissionResourceFormatEnum, Option()
+    ] = UrnIetfOauthUmaTicketPermissionResourceFormatEnum.URI,
+    permission_resource_matching_uri: Annotated[bool, Option()] = False,
+    response_include_resource_name: Annotated[bool, Option()] = False,
 ) -> None:
     service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
 
