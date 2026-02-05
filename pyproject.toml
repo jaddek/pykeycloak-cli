@@ -20,7 +20,7 @@ classifiers = [
 keywords = ["cli", "keycloak", "helpers"]
 
 dependencies = [
-    "pykeycloak>=0.5.7",
+    "pykeycloak>=0.5.8",
     "typer>=0.21.1",
 ]
 

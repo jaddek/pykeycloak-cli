@@ -404,8 +404,8 @@ wheels = [
 
 [[package]]
 name = "pykeycloak"
-version = "0.5.7"
-source = { git = "https://github.com/jaddek/pykeycloak.git#24331ce538886dfdc3e067199176c82aca8ad2ef" }
+version = "0.5.8"
+source = { git = "https://github.com/jaddek/pykeycloak.git#893e9711d09f1d7f31fc7ed0b61d60adc2577e05" }
 dependencies = [
     { name = "httpx", extra = ["http2"] },
 ]

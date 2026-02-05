@@ -244,3 +244,66 @@ make run ARGS="auth revoke --refresh-token=${__CLI_REFRESH} --realm otago"
 python cli.py uma perms --realm otago --access-token 'access-token' --response-mode permissions --permission-resource-format uri --permissions /otago/roles=view"
 make run ARGS="uma perms --realm otago --access-token 'access-token' --response-mode permissions --permission-resource-format uri --permissions /otago/roles=view"
 ```
+
+### Roles
+
+```sh
+
+ python cli.py roles roles --realm otago
+```
+
+```sh
+
+ python cli.py roles roles --realm otago --role-name ${role_name}
+```
+
+```sh
+
+ python cli.py roles create --realm otago --role-name ${role_name} --description ${role_description}
+```
+
+```sh
+
+ python cli.py roles roles --realm otago --role-name ${role_name}
+```
+
+```sh
+
+ python cli.py roles update --realm otago --role-name ${role_name} --role-description ${role_description}
+```
+
+```sh
+
+ python cli.py roles delete-by-id --realm otago --role-id ${role_id}
+```
+
+```sh
+
+ python cli.py roles delete-by-name --realm otago --role-name ${role_name}
+```
+
+```sh
+
+ python cli.py roles user-roles --realm otago --user-id ${user_id}
+```
+
+```sh
+
+ python cli.py roles user-composites-roles --realm otago --user-id ${user_id}
+```
+
+```sh
+
+ python cli.py roles user-available-roles --realm otago --user-id ${user_id}
+```
+
+
+```sh
+
+ python cli.py roles assign --realm otago --user-id ${user_id} --role-name ${role_name}
+```
+
+```sh
+
+ python cli.py roles unassign --realm otago --user-id ${user_id} --role-name ${role_name}
+```
