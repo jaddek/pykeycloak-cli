@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.providers.payloads import (
     RefreshTokenPayload,
     RTPIntrospectionPayload,
@@ -15,14 +15,14 @@ console = Console()
 
 
 async def _login_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     payload: UserCredentialsLoginPayload,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    token = await service_factory.auth.user_login_async(payload=payload)
+    token = await service.auth.user_login_async(payload=payload)
 
     table = view_resource(
         resource=token,
@@ -34,14 +34,14 @@ async def _login_async(
 
 
 async def _refresh_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     payload: RefreshTokenPayload,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    token = await service_factory.auth.refresh_token_async(payload=payload)
+    token = await service.auth.refresh_token_async(payload=payload)
 
     table = view_resource(
         resource=token,
@@ -53,14 +53,14 @@ async def _refresh_async(
 
 
 async def _info_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     access_token: str,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    info = await service_factory.auth.get_user_info_async(access_token=access_token)
+    info = await service.auth.get_user_info_async(access_token=access_token)
 
     table = view_resource(
         resource=info,
@@ -72,25 +72,25 @@ async def _info_async(
 
 
 async def _logout_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     refresh_token: str,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    await service_factory.auth.logout_async(refresh_token=refresh_token)
+    await service.auth.logout_async(refresh_token=refresh_token)
 
     console.print("ok")
 
 
 async def _introspect_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     payload: RTPIntrospectionPayload | TokenIntrospectionPayload,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    introspect = await service_factory.auth.introspect_token_async(payload=payload)
+    introspect = await service.auth.introspect_token_async(payload=payload)
 
     table = view_resource(
         resource=introspect,
@@ -102,21 +102,21 @@ async def _introspect_async(
 
 
 async def _certs_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    certs = await service_factory.auth.get_certs_async()
+    certs = await service.auth.get_certs_async()
 
     console.print(certs)
 
 
 async def _revoke_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     refresh_token: str,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    await service_factory.auth.revoke_async(refresh_token=refresh_token)
+    await service.auth.revoke_async(refresh_token=refresh_token)
 
     console.print("ok")

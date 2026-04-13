@@ -4,8 +4,7 @@
 import asyncio
 from typing import Annotated
 
-from pykeycloak.core.realm import Realm
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.providers.payloads import (
     RefreshTokenPayload,
     RTPIntrospectionPayload,
@@ -30,17 +29,16 @@ app: Typer = Typer(help="Keycloak Login commands")
 @app.command()
 def login(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     username: Annotated[str, Option(...)],
     password: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _login_async(
-            service_factory=service_factory,
+            service=service,
             payload=UserCredentialsLoginPayload(
                 username=username,
                 password=password,
@@ -54,16 +52,15 @@ def login(
 @app.command()
 def refresh(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     refresh_token: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _refresh_async(
-            service_factory=service_factory,
+            service=service,
             payload=RefreshTokenPayload(
                 refresh_token=refresh_token,
             ),
@@ -76,16 +73,15 @@ def refresh(
 @app.command()
 def info(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     access_token: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _info_async(
-            service_factory=service_factory,
+            service=service,
             access_token=access_token,
             fields=fields,
             exclude=exclude_fields,
@@ -96,14 +92,13 @@ def info(
 @app.command()
 def logout(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     refresh_token: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _logout_async(
-            service_factory=service_factory,
+            service=service,
             refresh_token=refresh_token,
         )
     )
@@ -112,16 +107,15 @@ def logout(
 @app.command()
 def introspect_rtp(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     token: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _introspect_async(
-            service_factory=service_factory,
+            service=service,
             payload=RTPIntrospectionPayload(
                 token=token,
             ),
@@ -134,16 +128,15 @@ def introspect_rtp(
 @app.command()
 def introspect_token(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     access_token: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _introspect_async(
-            service_factory=service_factory,
+            service=service,
             payload=TokenIntrospectionPayload(
                 token=access_token,
             ),
@@ -156,13 +149,12 @@ def introspect_token(
 @app.command()
 def certs(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _certs_async(
-            service_factory=service_factory,
+            service=service,
         )
     )
 
@@ -170,14 +162,13 @@ def certs(
 @app.command()
 def revoke(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     refresh_token: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _revoke_async(
-            service_factory=service_factory,
+            service=service,
             refresh_token=refresh_token,
         )
     )

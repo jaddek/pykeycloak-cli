@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.services.representations import ClientRepresentation
 from rich.console import Console
 
@@ -10,13 +10,13 @@ console = Console()
 
 
 async def _all(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    clients = await service_factory.clients.get_clients_async()
+    clients = await service.clients.get_clients_async()
 
     table = view_resource_list(
         resource_type=ClientRepresentation,
@@ -30,13 +30,13 @@ async def _all(
 
 
 async def _client(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    client = await service_factory.clients.get_client_async()
+    client = await service.clients.get_client_async()
 
     table = view_resource_list(
         resource_type=ClientRepresentation,

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.services.representations import PermissionRepresentation
 from rich.console import Console
 
@@ -10,13 +10,13 @@ console = Console()
 
 
 async def _all_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    data = await service_factory.authz_permission.get_permissions_async()
+    data = await service.authz_permission.get_permissions_async()
 
     table = view_resource_list(
         resource_type=PermissionRepresentation,
@@ -30,14 +30,14 @@ async def _all_async(
 
 
 async def _get_permission_based_on_resource_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     permission_id: str,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    data = await service_factory.authz_permission.get_permission_based_on_resource_by_id_async(
+    data = await service.authz_permission.get_permission_based_on_resource_by_id_async(
         permission_id=permission_id
     )
 
@@ -45,14 +45,14 @@ async def _get_permission_based_on_resource_async(
 
 
 async def _get_permission_based_on_scope_async(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     permission_id: str,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    data = await service_factory.authz_permission.get_permission_based_on_scope_by_id_async(
+    data = await service.authz_permission.get_permission_based_on_scope_by_id_async(
         permission_id=permission_id
     )
 

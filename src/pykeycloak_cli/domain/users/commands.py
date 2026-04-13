@@ -4,8 +4,7 @@
 import asyncio
 from typing import Annotated
 
-from pykeycloak.core.realm import Realm
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from typer import Context, Option, Typer
 
 from .services import (
@@ -28,17 +27,16 @@ app: Typer = Typer(help="Keycloak user commands")
 @app.command()
 def subset(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     limit: Annotated[int, Option(...)],
     offset: Annotated[int, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _subset_async(
-            service_factory=service_factory,
+            service=service,
             limit=limit,
             offset=offset,
             fields=fields,
@@ -50,16 +48,15 @@ def subset(
 @app.command()
 def all(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
     frame: Annotated[int | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _all_async(
-            service_factory=service_factory,
+            service=service,
             fields=fields,
             exclude=exclude_fields,
             frame=frame if frame else 100,
@@ -70,13 +67,12 @@ def all(
 @app.command()
 def count(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _count_async(
-            service_factory=service_factory,
+            service=service,
         )
     )
 
@@ -84,16 +80,15 @@ def count(
 @app.command()
 def by_id(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _by_id_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
             fields=fields,
             exclude=exclude_fields,
@@ -104,16 +99,15 @@ def by_id(
 @app.command()
 def by_role(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     role: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _by_role_async(
-            service_factory=service_factory,
+            service=service,
             role=role,
             fields=fields,
             exclude=exclude_fields,
@@ -124,14 +118,13 @@ def by_role(
 @app.command()
 def create(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     username: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _create_async(
-            service_factory=service_factory,
+            service=service,
             username=username,
         )
     )
@@ -140,16 +133,15 @@ def create(
 @app.command()
 def update(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     first_name: Annotated[str, Option(...)],
     last_name: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _update_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
             last_name=last_name,
             first_name=first_name,
@@ -160,25 +152,23 @@ def update(
 @app.command()
 def enable(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
-    asyncio.run(_enable_async(service_factory=service_factory, user_id=user_id))
+    asyncio.run(_enable_async(service=service, user_id=user_id))
 
 
 @app.command()
 def disable(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _disable_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
         )
     )
@@ -187,14 +177,13 @@ def disable(
 @app.command()
 def delete(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _delete_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
         )
     )
@@ -203,14 +192,9 @@ def delete(
 @app.command()
 def update_password(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     pwd: Annotated[str, Option(...)],
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
-    asyncio.run(
-        _update_password_async(
-            service_factory=service_factory, user_id=user_id, pwd=pwd
-        )
-    )
+    asyncio.run(_update_password_async(service=service, user_id=user_id, pwd=pwd))

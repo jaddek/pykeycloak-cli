@@ -9,8 +9,7 @@ from pykeycloak.core.enums import (
     UrnIetfOauthUmaTicketPermissionResourceFormatEnum,
     UrnIetfOauthUmaTicketResponseModeEnum,
 )
-from pykeycloak.core.realm import Realm
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.providers.payloads import UMAAuthorizationPayload
 from typer import Context, Option, Typer
 
@@ -21,27 +20,26 @@ from .services import (
 app: Typer = Typer(help="Keycloak Session commands")
 
 
-def parse_permissions(values: list[str]) -> dict[str, list[str]]:
-    result: dict[str, list[str]] = {}
+def parse_permissions(values: list[str]) -> list[str]:
+    result = []
     for value in values:
         try:
-            key, items = value.split("=", 1)
+            resource, scope = value.split("=", 1)
         except ValueError as err:
             raise typer.BadParameter(
-                "Permissions must be in the form key=val1,val2"
+                "Permissions must be in the form resource=scope"
             ) from err
-        result[key] = items.split(",")
+        result.append(f"{resource}#{scope}")
     return result
 
 
 @app.command()
 def perms(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     audience: Annotated[str, Option(...)],
     access_token: Annotated[str, Option(...)],
     permissions: Annotated[
-        list[str], Option(..., "--permission", help="Repeatable: role=perm1,perm2")
+        list[str], Option(..., "--permissions", help="Repeatable: role=perm1,perm2")
     ],
     response_mode: Annotated[
         UrnIetfOauthUmaTicketResponseModeEnum, Option()
@@ -52,7 +50,7 @@ def perms(
     permission_resource_matching_uri: Annotated[bool, Option()] = False,
     response_include_resource_name: Annotated[bool, Option()] = False,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     payload = UMAAuthorizationPayload(
         audience=audience,
@@ -66,7 +64,7 @@ def perms(
 
     asyncio.run(
         _perms_async(
-            service_factory=service_factory,
+            service=service,
             payload=payload,
         )
     )

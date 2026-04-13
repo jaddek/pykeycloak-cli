@@ -3,12 +3,8 @@
 from types import SimpleNamespace
 
 import typer
-from pykeycloak.core.headers import HeadersFactory
-from pykeycloak.core.realm import Realm, RealmClient
-from pykeycloak.core.validator import KeycloakResponseValidator
-from pykeycloak.dependancies import get_keycloak_client_wrapper_from_env
-from pykeycloak.factories import KeycloakServiceFactory
-from pykeycloak.providers.providers import KeycloakInMemoryProviderAsync
+from pykeycloak.core.realm import RealmClient
+from pykeycloak.pykeycloak import PyKeycloak
 
 from .domain.auth.commands import app as auth_app
 from .domain.authz.permissions.commands import app as permissions_app
@@ -21,31 +17,22 @@ from .domain.roles.commands import app as roles_app
 from .domain.sessions.commands import app as sessions_app
 from .domain.uma.commands import app as uma_app
 from .domain.users.commands import app as users_app
-from .registry import KeycloakServiceRegistry
 
 app = typer.Typer()
 
 
 @app.callback()
-def main(ctx: typer.Context) -> None:
-    registry = KeycloakServiceRegistry()
-
-    realm = Realm(name="otago")
-
-    service_factory = KeycloakServiceFactory(
-        provider=KeycloakInMemoryProviderAsync(
-            realm=realm,
-            realm_client=RealmClient.from_env(),
-            headers=HeadersFactory(),
-            wrapper=get_keycloak_client_wrapper_from_env(),
-        ),
-        validator=KeycloakResponseValidator(),
-    )
-
-    registry.register(realm=realm, factory=service_factory)
+def main(
+    ctx: typer.Context,
+    realm: str = typer.Option(
+        ..., "--realm", "-r", envvar="KEYCLOAK_REALM", help="Keycloak realm name"
+    ),
+) -> None:
+    __pkc = PyKeycloak()
+    __pkc.register(key=realm, realm_client=RealmClient.from_env(client_name=realm))
 
     ctx.obj = SimpleNamespace(
-        registry=registry,
+        registry=__pkc,
         realm_otago=realm,
     )
 

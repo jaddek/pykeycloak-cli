@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.services.representations import ScopeRepresentation
 from rich.console import Console
 
@@ -10,13 +10,13 @@ console = Console()
 
 
 async def _all(
-    service_factory: KeycloakServiceFactory,
+    service: KeycloakServiceFactoryProtocol,
     fields: str | None,
     exclude: str | None,
 ) -> None:
-    await service_factory.auth.client_login_async()
+    await service.auth.client_login_async()
 
-    data = await service_factory.authz_scope.get_client_authz_scopes_async()
+    data = await service.authz_scope.get_client_authz_scopes_async()
 
     table = view_resource_list(
         resource_type=ScopeRepresentation,

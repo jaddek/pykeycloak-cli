@@ -4,8 +4,7 @@
 import asyncio
 from typing import Annotated
 
-from pykeycloak.core.realm import Realm
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.providers.queries import FilterFindPolicyParams
 from typer import Context, Option, Typer
 
@@ -22,15 +21,14 @@ app: Typer = Typer(help="Keycloak clients commands")
 @app.command()
 def all(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _all(
-            service_factory=service_factory,
+            service=service,
             fields=fields,
             exclude=exclude_fields,
         )
@@ -40,18 +38,17 @@ def all(
 @app.command()
 def policy(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     policy_name: Annotated[str | None, Option(...)] = None,
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     query = FilterFindPolicyParams(name=policy_name) if policy_name else None
 
     asyncio.run(
         _get_policy_by_name(
-            service_factory=service_factory,
+            service=service,
             query=query,
             fields=fields,
             exclude=exclude_fields,
@@ -62,16 +59,15 @@ def policy(
 @app.command()
 def policy_auth_scopes(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     policy_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _get_policy_authorisation_scopes_async(
-            service_factory=service_factory,
+            service=service,
             policy_id=policy_id,
             fields=fields,
             exclude=exclude_fields,
@@ -82,16 +78,15 @@ def policy_auth_scopes(
 @app.command()
 def associated_roles(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     policy_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _get_associated_roles_async(
-            service_factory=service_factory,
+            service=service,
             policy_id=policy_id,
             fields=fields,
             exclude=exclude_fields,

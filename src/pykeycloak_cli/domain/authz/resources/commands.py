@@ -4,8 +4,7 @@
 import asyncio
 from typing import Annotated
 
-from pykeycloak.core.realm import Realm
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from typer import Context, Option, Typer
 
 from .services import (
@@ -20,15 +19,14 @@ app: Typer = Typer(help="Keycloak clients commands")
 @app.command()
 def all(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _all(
-            service_factory=service_factory,
+            service=service,
             fields=fields,
             exclude=exclude_fields,
         )
@@ -38,16 +36,15 @@ def all(
 @app.command()
 def resource(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     resource_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _get_resource_by_id(
-            service_factory=service_factory,
+            service=service,
             resource_id=resource_id,
             fields=fields,
             exclude=exclude_fields,
@@ -58,16 +55,15 @@ def resource(
 @app.command()
 def resource_permissions(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     resource_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _get_resource_permissions_by_id(
-            service_factory=service_factory,
+            service=service,
             resource_id=resource_id,
             fields=fields,
             exclude=exclude_fields,

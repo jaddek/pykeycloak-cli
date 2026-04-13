@@ -8,9 +8,25 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Env files
 .env.local
 .env.test
+.env.kc
+.env.*.local
 
-main.py
+# IDE
+.idea/
+.vscode/
+
+# Tools
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
 .coverage
+coverage.xml
+
+# Misc
+main.py
 requirements.txt

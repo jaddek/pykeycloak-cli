@@ -5,8 +5,7 @@ import asyncio
 from typing import Annotated
 from uuid import UUID
 
-from pykeycloak.core.realm import Realm
-from pykeycloak.factories import KeycloakServiceFactory
+from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
 from pykeycloak.providers.payloads import RolePayload
 from typer import Context, Option, Typer
 
@@ -30,15 +29,14 @@ app: Typer = Typer(help="Keycloak Client commands")
 @app.command()
 def roles(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _client_roles_async(
-            service_factory=service_factory,
+            service=service,
             fields=fields,
             exclude=exclude_fields,
         )
@@ -48,16 +46,15 @@ def roles(
 @app.command()
 def role(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     role_name: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _role_by_name_async(
-            service_factory=service_factory,
+            service=service,
             role_name=role_name,
             fields=fields,
             exclude=exclude_fields,
@@ -68,17 +65,16 @@ def role(
 @app.command()
 def create(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     name: Annotated[str, Option(...)],
     description: Annotated[str | None, Option(...)] = None,
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _create_role_async(
-            service_factory=service_factory,
+            service=service,
             payload=RolePayload(
                 name=name,
                 description=description,
@@ -92,17 +88,16 @@ def create(
 @app.command()
 def update(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     role_name: Annotated[str, Option(...)],
     role_description: Annotated[str | None, Option(...)] = None,
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _update_role_by_name_async(
-            service_factory=service_factory,
+            service=service,
             role_name=role_name,
             payload=RolePayload(
                 name=role_name,
@@ -117,16 +112,15 @@ def update(
 @app.command()
 def delete_by_id(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     role_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _delete_role_by_id_async(
-            service_factory=service_factory,
+            service=service,
             role_id=UUID(role_id),
             fields=fields,
             exclude=exclude_fields,
@@ -137,16 +131,15 @@ def delete_by_id(
 @app.command()
 def delete_by_name(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     role_name: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _delete_role_by_name_async(
-            service_factory=service_factory,
+            service=service,
             role_name=role_name,
             fields=fields,
             exclude=exclude_fields,
@@ -157,17 +150,16 @@ def delete_by_name(
 @app.command()
 def assign(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     role_name: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _assign_client_role_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
             role_name=role_name,
             fields=fields,
@@ -179,16 +171,15 @@ def assign(
 @app.command()
 def user_roles(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _user_roles_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
             fields=fields,
             exclude=exclude_fields,
@@ -199,16 +190,15 @@ def user_roles(
 @app.command()
 def user_composites_roles(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _user_composites_roles_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
             fields=fields,
             exclude=exclude_fields,
@@ -219,16 +209,15 @@ def user_composites_roles(
 @app.command()
 def user_available_roles(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _user_available_roles_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
             fields=fields,
             exclude=exclude_fields,
@@ -239,17 +228,16 @@ def user_available_roles(
 @app.command()
 def unassign(
     ctx: Context,
-    realm: Annotated[str, Option(...)],
     user_id: Annotated[str, Option(...)],
     role_name: Annotated[str, Option(...)],
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service_factory: KeycloakServiceFactory = ctx.obj.registry.get(Realm(name=realm))
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
 
     asyncio.run(
         _unassign_client_role_async(
-            service_factory=service_factory,
+            service=service,
             user_id=user_id,
             role_name=role_name,
             fields=fields,
