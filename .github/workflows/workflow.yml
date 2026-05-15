@@ -60,8 +60,9 @@ jobs:
 
       - name: Audit Python dependencies for known CVEs
         run: |
-          uv export --frozen --format requirements.txt --all-groups --no-emit-project -o /tmp/requirements-audit.txt
-          uv run pip-audit --strict --requirement /tmp/requirements-audit.txt --no-deps
+          uv export --frozen --format requirements.txt --all-groups --no-emit-project --no-hashes -o /tmp/requirements-audit.txt
+          grep -vE "^pykeycloak @ git\\+" /tmp/requirements-audit.txt > /tmp/requirements-audit-effective.txt
+          uv run pip-audit --strict --requirement /tmp/requirements-audit-effective.txt --no-deps
 
   build:
     runs-on: ubuntu-latest

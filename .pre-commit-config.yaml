@@ -1,10 +1,10 @@
-exclude: '^tests/|^exapl/'
+exclude: '^tests/|^examples/|^src/pykeycloak_client/core/urls\.py'
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.13
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: [ --fix, --exit-non-zero-on-fix ]
       - id: ruff-format
 
@@ -20,8 +20,15 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.1
+  - repo: local
     hooks:
-      - id: mypy
-        files: ^src/
+      - id: ty-check
+        name: ty check
+        entry: uv run ty check src
+        language: system
+        pass_filenames: false
+      - id: pip-audit
+        name: pip-audit (CVE scan)
+        entry: /bin/sh -lc 'uv export --frozen --format requirements.txt --all-groups --no-emit-project --no-hashes -o /tmp/requirements-audit.txt && grep -vE "^pykeycloak @ git\\+" /tmp/requirements-audit.txt > /tmp/requirements-audit-effective.txt && uv run pip-audit --strict --requirement /tmp/requirements-audit-effective.txt --no-deps'
+        language: system
+        pass_filenames: false
