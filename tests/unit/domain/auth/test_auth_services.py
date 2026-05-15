@@ -1,4 +1,5 @@
 from unittest.mock import AsyncMock, MagicMock
+from uuid import uuid4
 
 import pytest
 
@@ -49,15 +50,23 @@ async def test_refresh_renders_token(monkeypatch: pytest.MonkeyPatch) -> None:
 async def test_info_renders_user_info(monkeypatch: pytest.MonkeyPatch) -> None:
     service = MagicMock()
     info = object()
+    test_access_token = str(uuid4())
     service.auth.client_login_async = AsyncMock()
     service.auth.get_user_info_async = AsyncMock(return_value=info)
 
     captured: dict[str, object] = {}
     monkeypatch.setattr(auth_services, "view_resource", lambda **kwargs: captured.update(kwargs) or "table")
 
-    await auth_services._info_async(service=service, access_token="abc", fields=None, exclude=None)
+    await auth_services._info_async(
+        service=service,
+        access_token=test_access_token,
+        fields=None,
+        exclude=None,
+    )
 
-    service.auth.get_user_info_async.assert_awaited_once_with(access_token="abc")
+    service.auth.get_user_info_async.assert_awaited_once_with(
+        access_token=test_access_token
+    )
     assert captured["resource"] is info
 
 
@@ -81,28 +90,30 @@ async def test_introspect_renders_result(monkeypatch: pytest.MonkeyPatch) -> Non
 @pytest.mark.asyncio
 async def test_logout_calls_auth_and_prints_ok(monkeypatch: pytest.MonkeyPatch) -> None:
     service = MagicMock()
+    test_refresh_token = str(uuid4())
     service.auth.client_login_async = AsyncMock()
     service.auth.logout_async = AsyncMock()
     print_mock = MagicMock()
     monkeypatch.setattr(auth_services.console, "print", print_mock)
 
-    await auth_services._logout_async(service=service, refresh_token="rt")
+    await auth_services._logout_async(service=service, refresh_token=test_refresh_token)
 
-    service.auth.logout_async.assert_awaited_once_with(refresh_token="rt")
+    service.auth.logout_async.assert_awaited_once_with(refresh_token=test_refresh_token)
     print_mock.assert_called_once_with("ok")
 
 
 @pytest.mark.asyncio
 async def test_revoke_calls_auth_and_prints_ok(monkeypatch: pytest.MonkeyPatch) -> None:
     service = MagicMock()
+    test_refresh_token = str(uuid4())
     service.auth.client_login_async = AsyncMock()
     service.auth.revoke_async = AsyncMock()
     print_mock = MagicMock()
     monkeypatch.setattr(auth_services.console, "print", print_mock)
 
-    await auth_services._revoke_async(service=service, refresh_token="rt")
+    await auth_services._revoke_async(service=service, refresh_token=test_refresh_token)
 
-    service.auth.revoke_async.assert_awaited_once_with(refresh_token="rt")
+    service.auth.revoke_async.assert_awaited_once_with(refresh_token=test_refresh_token)
     print_mock.assert_called_once_with("ok")
 
 

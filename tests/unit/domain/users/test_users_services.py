@@ -1,4 +1,5 @@
 from unittest.mock import AsyncMock, MagicMock
+from uuid import uuid4
 
 import pytest
 from pykeycloak.services.representations import UserRepresentation
@@ -115,6 +116,7 @@ async def test_update_async(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.mark.asyncio
 async def test_enable_disable_delete_and_password(monkeypatch: pytest.MonkeyPatch) -> None:
     service = MagicMock()
+    test_password = str(uuid4())
     service.auth.client_login_async = AsyncMock()
     service.users.enable_user_async = AsyncMock()
     service.users.get_user_async = AsyncMock(return_value=_user())
@@ -126,11 +128,15 @@ async def test_enable_disable_delete_and_password(monkeypatch: pytest.MonkeyPatc
     await users_services._enable_async(service, user_id="u1")
     await users_services._disable_async(service, user_id="u1")
     await users_services._delete_async(service, user_id="u1")
-    await users_services._update_password_async(service, user_id="u1", pwd="secret")
+    await users_services._update_password_async(
+        service,
+        user_id="u1",
+        pwd=test_password,
+    )
 
     enable_calls = service.users.enable_user_async.await_args_list
     assert enable_calls[0].kwargs["payload"].enabled is True
     assert enable_calls[1].kwargs["payload"].enabled is False
     service.users.delete_user_async.assert_awaited_once_with(user_id="u1")
     password_payload = service.users.update_user_password_async.await_args.kwargs["payload"]
-    assert password_payload.credentials[0]["value"] == "secret"
+    assert password_payload.credentials[0]["value"] == test_password
