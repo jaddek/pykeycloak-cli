@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
+from collections.abc import Sequence
 from dataclasses import fields as dataclass_fields
 
 from pykeycloak.services.representations import Representation
@@ -41,7 +42,7 @@ def view_resource[T: Representation](
 
 def view_resource_list[T: Representation](
     resource_type: type[T],
-    resource_list: enumerate[T],
+    resource_list: Sequence[T],
     resource_count: int,
     fields: str | None = None,
     exclude: str | None = None,
@@ -68,7 +69,7 @@ def view_resource_list[T: Representation](
     for header in active_headers:
         table.add_column(header, justify="left")
 
-    for i, resource in resource_list:
+    for i, resource in enumerate(resource_list, start=1):
         row_values = [str(getattr(resource, key, "—")) for key in active_headers]
         table.add_row(str(i), *row_values)
 

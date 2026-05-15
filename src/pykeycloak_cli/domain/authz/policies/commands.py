@@ -24,7 +24,7 @@ def all(
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _all(
@@ -42,7 +42,7 @@ def policy(
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     query = FilterFindPolicyParams(name=policy_name) if policy_name else None
 
@@ -63,7 +63,7 @@ def policy_auth_scopes(
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _get_policy_authorisation_scopes_async(
@@ -82,7 +82,7 @@ def associated_roles(
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _get_associated_roles_async(

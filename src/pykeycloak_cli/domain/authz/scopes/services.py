@@ -20,7 +20,7 @@ async def _all(
 
     table = view_resource_list(
         resource_type=ScopeRepresentation,
-        resource_list=enumerate(data, start=1),
+        resource_list=data,
         resource_count=len(data),
         fields=fields,
         exclude=exclude,

@@ -20,7 +20,7 @@ async def _all(
 
     table = view_resource_list(
         resource_type=ClientRepresentation,
-        resource_list=enumerate(clients, start=1),
+        resource_list=clients,
         resource_count=len(clients),
         fields=fields,
         exclude=exclude,
@@ -40,7 +40,7 @@ async def _client(
 
     table = view_resource_list(
         resource_type=ClientRepresentation,
-        resource_list=enumerate([client], start=1),
+        resource_list=[client],
         resource_count=1 if client else 0,
         fields=fields,
         exclude=exclude,

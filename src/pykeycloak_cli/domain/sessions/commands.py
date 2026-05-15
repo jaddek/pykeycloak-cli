@@ -28,7 +28,7 @@ def all(
     exclude_fields: Annotated[str | None, Option()] = None,
     frame: Annotated[int | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _all_async(
@@ -44,7 +44,7 @@ def all(
 def count(
     ctx: Context,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _count_async(
@@ -60,7 +60,7 @@ def stats(
     exclude_fields: Annotated[str | None, Option()] = None,
     frame: Annotated[int | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _stats_async(
@@ -80,7 +80,7 @@ def offline(
     exclude_fields: Annotated[str | None, Option()] = None,
     frame: Annotated[int | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _offline_sessions_async(
@@ -101,7 +101,7 @@ def user(
     exclude_fields: Annotated[str | None, Option()] = None,
     frame: Annotated[int | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _user_sessions_async(
@@ -120,7 +120,7 @@ def delete_by_id(
     session_id: Annotated[str, Option(...)],
     is_offline: Annotated[bool, Option()] = True,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _delete_session_by_id_async(
@@ -135,7 +135,7 @@ def delete_by_id(
 def delete_all(
     ctx: Context,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _delete_all_sessions_async(
@@ -149,7 +149,7 @@ def delete_users_sessions(
     ctx: Context,
     user_id: Annotated[str, Option(...)],
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _delete_users_sessions_async(

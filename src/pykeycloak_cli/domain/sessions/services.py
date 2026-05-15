@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Anton "Tony" Nazarov <tonynazarov+dev@gmail.com>
 from pykeycloak.core.protocols import KeycloakServiceFactoryProtocol
-from pykeycloak.services.representations import SessionRepresentation
+from pykeycloak.services.representations import (
+    SessionRepresentation,
+    SessionsStatsRepresentation,
+)
 from rich.console import Console
 
 from pykeycloak_cli.representations.console_utils import view_resource_list
@@ -21,7 +24,7 @@ async def _all_async(
 
     table = view_resource_list(
         resource_type=SessionRepresentation,
-        resource_list=enumerate(sessions_list, start=1),
+        resource_list=sessions_list,
         resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,
@@ -52,8 +55,8 @@ async def _stats_async(
     sessions_list = await service.sessions.get_client_session_stats_async()
 
     table = view_resource_list(
-        resource_type=SessionRepresentation,
-        resource_list=enumerate(sessions_list, start=1),
+        resource_type=SessionsStatsRepresentation,
+        resource_list=sessions_list,
         resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,
@@ -78,7 +81,7 @@ async def _offline_sessions_async(
 
     table = view_resource_list(
         resource_type=SessionRepresentation,
-        resource_list=enumerate([sessions_list], start=1),
+        resource_list=[sessions_list],
         resource_count=len([sessions_list]),
         fields=fields,
         exclude=exclude,
@@ -101,7 +104,7 @@ async def _user_sessions_async(
 
     table = view_resource_list(
         resource_type=SessionRepresentation,
-        resource_list=enumerate(sessions_list, start=1),
+        resource_list=sessions_list,
         resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,
@@ -156,7 +159,7 @@ async def _client_async(
 
     table = view_resource_list(
         resource_type=SessionRepresentation,
-        resource_list=enumerate(sessions_list, start=1),
+        resource_list=sessions_list,
         resource_count=len(sessions_list),
         fields=fields,
         exclude=exclude,

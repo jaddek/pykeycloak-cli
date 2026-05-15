@@ -22,7 +22,7 @@ def all(
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _all(
@@ -40,7 +40,7 @@ def resource(
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _get_resource_by_id(
@@ -59,7 +59,7 @@ def resource_permissions(
     fields: Annotated[str | None, Option()] = None,
     exclude_fields: Annotated[str | None, Option()] = None,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     asyncio.run(
         _get_resource_permissions_by_id(

@@ -50,7 +50,7 @@ def perms(
     permission_resource_matching_uri: Annotated[bool, Option()] = False,
     response_include_resource_name: Annotated[bool, Option()] = False,
 ) -> None:
-    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_otago)
+    service: KeycloakServiceFactoryProtocol = ctx.obj.registry.get(ctx.obj.realm_key)
 
     payload = UMAAuthorizationPayload(
         audience=audience,

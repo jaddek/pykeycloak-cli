@@ -33,7 +33,7 @@ async def _subset_async(
 
     table = view_resource_list(
         resource_type=UserRepresentation,
-        resource_list=enumerate(users_list, start=1),
+        resource_list=users_list,
         resource_count=users_count,
         fields=fields,
         exclude=exclude,
@@ -55,7 +55,7 @@ async def _all_async(
 
     table = view_resource_list(
         resource_type=UserRepresentation,
-        resource_list=enumerate(users_list, start=1),
+        resource_list=users_list,
         resource_count=users_count,
         fields=fields,
         exclude=exclude,
@@ -86,7 +86,7 @@ async def _by_id_async(
 
     table = view_resource_list(
         resource_type=UserRepresentation,
-        resource_list=enumerate([user], start=1),
+        resource_list=[user],
         resource_count=1 if user else 0,
         fields=fields,
         exclude=exclude,
@@ -117,7 +117,7 @@ async def _create_async(service: KeycloakServiceFactoryProtocol, username: str) 
 
     table = view_resource_list(
         resource_type=UserRepresentation,
-        resource_list=enumerate([user], start=1),
+        resource_list=[user],
         resource_count=1 if user is not None else 0,
         fields=None,
         exclude=None,
@@ -143,7 +143,7 @@ async def _update_async(
 
     table = view_resource_list(
         resource_type=UserRepresentation,
-        resource_list=enumerate([user], start=1),
+        resource_list=[user],
         resource_count=1 if user is not None else 0,
         fields=None,
         exclude=None,
@@ -162,7 +162,7 @@ async def _enable_async(service: KeycloakServiceFactoryProtocol, user_id: str) -
 
     table = view_resource_list(
         resource_type=UserRepresentation,
-        resource_list=enumerate([user], start=1),
+        resource_list=[user],
         resource_count=1 if user is not None else 0,
         fields="enabled",
         exclude=None,
@@ -182,7 +182,7 @@ async def _disable_async(service: KeycloakServiceFactoryProtocol, user_id: str) 
 
     table = view_resource_list(
         resource_type=UserRepresentation,
-        resource_list=enumerate([user], start=1),
+        resource_list=[user],
         resource_count=1 if user is not None else 0,
         fields="enabled",
         exclude=None,

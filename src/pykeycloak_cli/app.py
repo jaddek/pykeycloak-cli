@@ -33,7 +33,7 @@ def main(
 
     ctx.obj = SimpleNamespace(
         registry=__pkc,
-        realm_otago=realm,
+        realm_key=realm,
     )
 
 

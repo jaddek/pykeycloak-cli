@@ -106,7 +106,7 @@ async def _certs_async(
 ) -> None:
     await service.auth.client_login_async()
 
-    certs = await service.auth.get_certs_async()
+    certs = await service.well_known.get_certs_async()
 
     console.print(certs)
 

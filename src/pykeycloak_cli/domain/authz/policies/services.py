@@ -14,7 +14,7 @@ async def _all(
 ) -> None:
     await service.auth.client_login_async()
 
-    data = await service.auth_policy.get_policies_async()
+    data = await service.authz_policy.get_policies_async()
 
     console.print(data)
 
@@ -27,7 +27,7 @@ async def _get_policy_by_name(
 ) -> None:
     await service.auth.client_login_async()
 
-    data = await service.auth_policy.get_policy_by_name_async(query=query)
+    data = await service.authz_policy.get_policy_by_name_async(query=query)
 
     console.print(data)
 
@@ -40,7 +40,7 @@ async def _get_policy_authorisation_scopes_async(
 ) -> None:
     await service.auth.client_login_async()
 
-    data = await service.auth_policy.get_policy_authorisation_scopes_async(
+    data = await service.authz_policy.get_policy_authorisation_scopes_async(
         policy_id=policy_id
     )
 
@@ -55,6 +55,6 @@ async def _get_associated_roles_async(
 ) -> None:
     await service.auth.client_login_async()
 
-    data = await service.auth_policy.get_associated_roles_async(policy_id=policy_id)
+    data = await service.authz_policy.get_associated_roles_async(policy_id=policy_id)
 
     console.print(data)

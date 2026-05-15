@@ -27,8 +27,9 @@ Environment variables can be found as a list in .env and .env.local. It is NOT n
 
 Located in .env|.env.local (according to Makefile)
 
-To run the command it is possible to use just `python` OR `uv run` OR `make run`
+To run the command it is possible to use installed `pykc`, `python`, `uv run`, or `make run`
 
+- `pykc`: Run the installed CLI entry point (recommended for package users).
 - `python pykc.py`: Run the command directly.
 - `uv run pykc.py`: Run the command using uv.
 - `make run`: Run the same with environment variables loaded from .env and .env.local. `(Dev mode)`
