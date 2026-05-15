@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 from unittest.mock import MagicMock
+from uuid import uuid4
 
 import pytest
 import typer
@@ -25,5 +26,10 @@ def test_perms_command(monkeypatch):
     monkeypatch.setattr(c, "asyncio", SimpleNamespace(run=MagicMock()))
     monkeypatch.setattr(c, "_perms_async", MagicMock(return_value="ok"))
     ctx = _ctx()
-    c.perms(ctx, audience="a", access_token="t", permissions=["r=s"])
+    c.perms(
+        ctx,
+        audience="a",
+        access_token=str(uuid4()),
+        permissions=["r=s"],
+    )
     assert c.asyncio.run.call_count == 1

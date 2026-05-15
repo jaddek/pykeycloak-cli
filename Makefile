@@ -80,11 +80,11 @@ run: ## Run app
 # Formatting & Linting
 # ========================
 format: ## Format code using Black and Ruff
-	@uv run pre-commit run black --all-files
-	@uv run pre-commit run ruff --all-files
+	@uv run pre-commit run ruff-format --all-files
+	@uv run pre-commit run ruff-check --all-files
 
 lint: ## Lint code using Ruff
-	@uv run pre-commit run ruff --all-files
+	@uv run pre-commit run ruff-check --all-files
 
 typecheck: ## Type-check code using ty
 	@$(load_env); $(UV_RUN) ty check src
