@@ -1,6 +1,9 @@
 from pykeycloak.services.representations import SessionRepresentation
 
-from pykeycloak_cli.representations.console_utils import view_resource, view_resource_list
+from pykeycloak_cli.representations.console_utils import (
+    view_resource,
+    view_resource_list,
+)
 
 
 def test_view_resource_list_accepts_sequence() -> None:
